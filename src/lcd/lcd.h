@@ -23,7 +23,7 @@ enum class NextionPage: byte {
   /* 0C */ BrewTransitionProfile,
   /* 0D */ GraphPreview,
   /* 0E */ KeyboardNumeric,
-  /* 0F */ Led
+  // /* 0F */ Led
 };
 
 extern volatile NextionPage lcdCurrentPageId;
@@ -38,7 +38,7 @@ void lcdListen(void);
 void lcdWakeUp(void);
 
 void lcdFetchCurrentProfile(eepromValues_t & settings);
-void lcdFetchLed(eepromValues_t & settings);
+// void lcdFetchLed(eepromValues_t & settings);
 void lcdFetchPage(eepromValues_t &settings, NextionPage page, int targetProfile);
 uint8_t lcdGetSelectedProfile(void);
 bool lcdGetPreinfusionFlowState(void);

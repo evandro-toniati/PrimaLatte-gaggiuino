@@ -24,8 +24,8 @@ eepromValues_t runningCfg;
 
 SystemState systemState;
 
-LED led;
-TOF tof;
+//LED led;
+//TOF tof;
 
 void setup(void) {
   LOG_INIT();
@@ -61,10 +61,10 @@ void setup(void) {
   espCommsInit();
 
   // Initialize LED
-  led.begin();
-  led.setColor(9u, 0u, 9u); // WHITE
+  //led.begin();
+  //led.setColor(9u, 0u, 9u); // WHITE
   // Init the tof sensor
-  tof.init(currentState);
+  //tof.init(currentState);
 
   // Initialising the saved values or writing defaults if first start
   eepromInit();
@@ -95,7 +95,7 @@ void setup(void) {
   LOG_INFO("Setup sequence finished");
 
   // Change LED colour on setup exit.
-  led.setColor(9u, 0u, 9u); // 64171
+  //led.setColor(9u, 0u, 9u); // 64171
 
   iwdcInit();
 }
@@ -131,8 +131,8 @@ static void sensorsRead(void) {
   sensorsReadPressure();
   calculateWeightAndFlow();
   updateStartupTimer();
-  readTankWaterLevel();
-  doLed();
+  // readTankWaterLevel();
+  // doLed();
 }
 
 static void sensorReadSwitches(void) {
@@ -241,16 +241,16 @@ static void calculateWeightAndFlow(void) {
   }
 }
 
-// return the reading in mm of the tank water level.
-static void readTankWaterLevel(void) {
-  if (lcdCurrentPageId == NextionPage::Home) {
-    // static uint32_t tof_timeout = millis();
-    // if (millis() >= tof_timeout) {
-    currentState.waterLvl = tof.readLvl();
-      // tof_timeout = millis() + 500;
-    // }
-  }
-}
+// // return the reading in mm of the tank water level.
+// static void readTankWaterLevel(void) {
+//   if (lcdCurrentPageId == NextionPage::Home) {
+//     // static uint32_t tof_timeout = millis();
+//     // if (millis() >= tof_timeout) {
+//     currentState.waterLvl = tof.readLvl();
+//       // tof_timeout = millis() + 500;
+//     // }
+//   }
+// }
 
 //##############################################################################################################################
 //############################################______PAGE_CHANGE_VALUES_REFRESH_____#############################################
@@ -259,7 +259,7 @@ static void pageValuesRefresh() {
   // Read the page we're landing in: leaving keyboard page means a value could've changed in it
   if (lcdLastCurrentPageId == NextionPage::KeyboardNumeric) lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
   // Or maybe it's a page that needs constant polling
-  else if (lcdLastCurrentPageId == NextionPage::Led) lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
+  // else if (lcdLastCurrentPageId == NextionPage::Led) lcdFetchPage(runningCfg, lcdCurrentPageId, runningCfg.activeProfile);
   // Finally read the page we left, as it could've been changed in place (e.g. boolean toggles)
   else lcdFetchPage(runningCfg, lcdLastCurrentPageId, runningCfg.activeProfile);
 
@@ -966,33 +966,33 @@ static void cpsInit(eepromValues_t &eepromValues) {
   }
 }
 
-static void doLed(void) {
-  if (runningCfg.ledDisco && brewActive) {
-    switch(lcdCurrentPageId) {
-      case NextionPage::BrewGraph:
-      case NextionPage::BrewManual:
-        led.setDisco(led.CLASSIC);
-        break;
-      case NextionPage::Flush:
-        led.setDisco(led.STROBE);
-        break;
-      case NextionPage::Descale:
-        led.setDisco(led.DESCALE);
-        break;
-      default:
-        led.setColor(0, 0, 0);
-        break;
-    }
-  } else {
-    switch(lcdCurrentPageId) {
-      case NextionPage::Led:
-        static uint32_t timer = millis();
-        if (millis() > timer) {
-          timer = millis() + 100u;
-          lcdFetchLed(runningCfg);
-        }
-      default: // intentionally fall through
-        led.setColor(runningCfg.ledR, runningCfg.ledG, runningCfg.ledB);
-    }
-  }
-}
+// static void doLed(void) {
+//   if (runningCfg.ledDisco && brewActive) {
+//     switch(lcdCurrentPageId) {
+//       case NextionPage::BrewGraph:
+//       case NextionPage::BrewManual:
+//         led.setDisco(led.CLASSIC);
+//         break;
+//       case NextionPage::Flush:
+//         led.setDisco(led.STROBE);
+//         break;
+//       case NextionPage::Descale:
+//         led.setDisco(led.DESCALE);
+//         break;
+//       default:
+//         led.setColor(0, 0, 0);
+//         break;
+//     }
+//   } else {
+//     switch(lcdCurrentPageId) {
+//       case NextionPage::Led:
+//         static uint32_t timer = millis();
+//         if (millis() > timer) {
+//           timer = millis() + 100u;
+//           lcdFetchLed(runningCfg);
+//         }
+//       default: // intentionally fall through
+//         led.setColor(runningCfg.ledR, runningCfg.ledG, runningCfg.ledB);
+//     }
+//   }
+// }

@@ -7,6 +7,8 @@
 #define thermoDI      PA7 // not used
 #define thermoCS      PA6
 #define thermoCLK     PA5
+// Steam thermocouple chip select (SPI slave select) pin
+#define steam_thermoCS  PA4
 
 #define zcPin         PA0
 #define brewPin       PC14

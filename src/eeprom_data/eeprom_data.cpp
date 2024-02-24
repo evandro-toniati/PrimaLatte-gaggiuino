@@ -104,11 +104,11 @@ namespace {
     defaultData.scalesF1 = 3920;
     defaultData.scalesF2 = 4210;
     defaultData.pumpFlowAtZero = 0.2225f;
-    defaultData.ledState  = true;
-    defaultData.ledDisco  = true;
-    defaultData.ledR = 9;
-    defaultData.ledG = 0;
-    defaultData.ledB = 9;
+    // defaultData.ledState  = true;
+    // defaultData.ledDisco  = true;
+    // defaultData.ledR = 9;
+    // defaultData.ledG = 0;
+    // defaultData.ledB = 9;
 
     return defaultData;
   }

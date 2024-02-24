@@ -8,25 +8,25 @@ EasyNex myNex(USART_LCD);
 volatile NextionPage lcdCurrentPageId;
 volatile NextionPage lcdLastCurrentPageId;
 
-// decode/encode bit packing.
-// format is 000000sd rrrrrrrr gggggggg bbbbbbbb, where s = state, d = disco, r/g/b = colors
-void lcdDecodeLedSettings(uint32_t code, bool &state, bool &disco, uint8_t &r, uint8_t &g, uint8_t &b) {
-  state = (code & 0x02000000);
-  disco = (code & 0x01000000);
-  r     = (code & 0x00FF0000) >> 16;
-  g     = (code & 0x0000FF00) >> 8;
-  b     = (code & 0x000000FF);
-}
+// // decode/encode bit packing.
+// // format is 000000sd rrrrrrrr gggggggg bbbbbbbb, where s = state, d = disco, r/g/b = colors
+// void lcdDecodeLedSettings(uint32_t code, bool &state, bool &disco, uint8_t &r, uint8_t &g, uint8_t &b) {
+//   state = (code & 0x02000000);
+//   disco = (code & 0x01000000);
+//   r     = (code & 0x00FF0000) >> 16;
+//   g     = (code & 0x0000FF00) >> 8;
+//   b     = (code & 0x000000FF);
+// }
 
-uint32_t lcdEncodeLedSettings(bool state, bool disco, uint8_t r, uint8_t g, uint8_t b) {
-  uint32_t code;
-  code = state ? 0x01 : 0x00;
-  code = (code << 1) | (disco ? 0x01 : 0x00);
-  code = (code << 8) | (r & 0xFF);
-  code = (code << 8) | (g & 0xFF);
-  code = (code << 8) | (b & 0xFF);
-  return code;
-}
+// uint32_t lcdEncodeLedSettings(bool state, bool disco, uint8_t r, uint8_t g, uint8_t b) {
+//   uint32_t code;
+//   code = state ? 0x01 : 0x00;
+//   code = (code << 1) | (disco ? 0x01 : 0x00);
+//   code = (code << 8) | (r & 0xFF);
+//   code = (code << 8) | (g & 0xFF);
+//   code = (code << 8) | (b & 0xFF);
+//   return code;
+// }
 
 void lcdInit(void) {
   myNex.begin(115200);
@@ -181,15 +181,15 @@ void lcdUploadCfg(eepromValues_t &eepromCurrentValues) {
   myNex.writeNum("warmupState", eepromCurrentValues.warmupState);
 
   // Led
-  myNex.writeNum("ledNum",
-    lcdEncodeLedSettings(
-      eepromCurrentValues.ledState,
-      eepromCurrentValues.ledDisco,
-      eepromCurrentValues.ledR,
-      eepromCurrentValues.ledG,
-      eepromCurrentValues.ledB
-    )
-  );
+  // myNex.writeNum("ledNum",
+  //   lcdEncodeLedSettings(
+  //     eepromCurrentValues.ledState,
+  //     eepromCurrentValues.ledDisco,
+  //     eepromCurrentValues.ledR,
+  //     eepromCurrentValues.ledG,
+  //     eepromCurrentValues.ledB
+  //   )
+  // );
 
   lcdUploadProfile(eepromCurrentValues);
 }
@@ -420,11 +420,11 @@ void lcdFetchSystem(eepromValues_t &settings) {
   settings.pumpFlowAtZero                 = myNex.readNumber("sP.pump_zero.val") / 10000.f;
 }
 
-void lcdFetchLed(eepromValues_t &settings) {
-  // Led Settings
-  uint32_t ledNum = myNex.readNumber("ledNum");
-  lcdDecodeLedSettings(ledNum, settings.ledState, settings.ledDisco, settings.ledR, settings.ledG, settings.ledB);
-}
+// void lcdFetchLed(eepromValues_t &settings) {
+//   // Led Settings
+//   uint32_t ledNum = myNex.readNumber("ledNum");
+//   lcdDecodeLedSettings(ledNum, settings.ledState, settings.ledDisco, settings.ledR, settings.ledG, settings.ledB);
+// }
 
 void lcdFetchPage(eepromValues_t &settings, NextionPage page, int targetProfile) {
   switch (page) {
@@ -453,9 +453,9 @@ void lcdFetchPage(eepromValues_t &settings, NextionPage page, int targetProfile)
     case NextionPage::ShotSettings:
       lcdFetchDoseSettings(settings.profiles[targetProfile]);
       break;
-    case NextionPage::Led:
-      lcdFetchLed(settings);
-      break;
+    // case NextionPage::Led:
+    //   lcdFetchLed(settings);
+    //   break;
     default:
       break;
   }
